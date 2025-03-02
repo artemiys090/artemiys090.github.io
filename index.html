@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Решение квадратных уравнений</title>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js">
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #formula {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Решение квадратного уравнения</h1>
+    <div id="formula">Введите уравнение...</div>
+    <button onclick="loadFormula()">Обновить</button>
+
+    <script>
+        function loadFormula() {
+            Telegram.WebApp.sendData("request_formula"); // Отправка запроса боту
+        }
+
+        function receiveFormula(formula) {
+            document.getElementById("formula").innerHTML = "$$" + formula + "$$";
+            MathJax.typesetPromise(); // Обновление формулы
+        }
+
+        Telegram.WebApp.onEvent("message", function(event) {
+            if (event.data && event.data.formula) {
+                receiveFormula(event.data.formula);
+            }
+        });
+
+        Telegram.WebApp.ready();
+    </script>
+</body>
+</html>
